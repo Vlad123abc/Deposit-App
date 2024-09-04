@@ -1,0 +1,3 @@
+rootProject.name = 'DepositApp'
+include 'domain'
+
