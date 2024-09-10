@@ -21,4 +21,24 @@ test {
 buildDir = '../build'
 subprojects {
     buildDir = "${rootProject.buildDir}/${project.name}"
+    // Example for test reports
+    tasks.withType(Test) {
+        reports {
+            junitXml.destination = file("${buildDir}/test-results")
+            html.destination = file("${buildDir}/test-results/html")
+        }
+        testLogging {
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+            events "passed", "skipped", "failed"
+            exceptionFormat "full"
+        }
+
+        // Configure the output directory for test logs
+        doFirst {
+            systemProperty "java.util.logging.config.file", file("${buildDir}/test-logs/logging.properties")
+        }    
+        
+    }    
 }
+
