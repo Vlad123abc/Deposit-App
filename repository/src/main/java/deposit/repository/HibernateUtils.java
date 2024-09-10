@@ -1,12 +1,10 @@
 package deposit.repository;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 import java.sql.Connection;
-import java.util.Properties;
+import java.sql.SQLException;
 
 public class HibernateUtils {
     private static SessionFactory sessionFactory;
@@ -17,32 +15,36 @@ public class HibernateUtils {
         return sessionFactory;
     }
 
-    private static  SessionFactory createNewSessionFactory(Connection connection){
-        sessionFactory = new Configuration()
-                .configure()
-                .buildSessionFactory();
+//    private static  SessionFactory createNewSessionFactory(Connection connection){
+//        sessionFactory = new Configuration()
+//                .configure()
+//                .buildSessionFactory();
+//        return sessionFactory;
+//    }
+
+    private static SessionFactory createNewSessionFactory(Connection connection) {
+        // Create Configuration object and configure it using hibernate.cfg.xml
+        Configuration configuration = new Configuration();
+        configuration.configure(); // Loads settings from hibernate.cfg.xml
+
+        // Get the URL from the provided Connection object
+        String jdbcUrl;
+        try {
+            jdbcUrl = connection.getMetaData().getURL();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get URL from connection", e);
+        }
+
+        // Override the connection URL with the URL from the provided Connection
+        configuration.setProperty("hibernate.connection.url", jdbcUrl);
+
+        // Build the SessionFactory with the overridden settings
+        sessionFactory = configuration.buildSessionFactory();
         return sessionFactory;
     }
 
     public static  void closeSessionFactory(){
         if (sessionFactory!=null)
             sessionFactory.close();
-    }
-
-    // New method to create a SessionFactory with a custom JDBC URL
-    public static SessionFactory createSessionFactoryWithCustomUrl(String jdbcUrl) {
-        Configuration configuration = new Configuration();
-        configuration.configure();  // Loads settings from hibernate.cfg.xml
-
-        // Override the connection URL property
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.connection.url", jdbcUrl);
-        configuration.addProperties(properties);
-
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties())
-                .build();
-
-        return configuration.buildSessionFactory(serviceRegistry);
     }
 }
