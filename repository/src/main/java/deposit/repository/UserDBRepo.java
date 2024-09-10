@@ -34,7 +34,7 @@ public class UserDBRepo implements UserRepository {
 
         try {
             final Statement stmt = connection.createStatement();
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Users (id INTEGER, username TEXT, password TEXT, PRIMARY KEY(id_user))");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Users (id INTEGER, username TEXT, password TEXT, PRIMARY KEY(id))");
         } catch (SQLException e) {
             System.err.println("[ERROR] createSchema : " + e.getMessage());
         }
@@ -42,7 +42,7 @@ public class UserDBRepo implements UserRepository {
 
     @Override
     public User getById(Long id) {
-        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
+        try (Session session = HibernateUtils.getSessionFactory(connection).openSession()) {
             return session.createSelectionQuery("from User where id =:idU ", User.class)
                     .setParameter("idU", id)
                     .getSingleResultOrNull();
@@ -51,19 +51,19 @@ public class UserDBRepo implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        try(Session session = HibernateUtils.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtils.getSessionFactory(connection).openSession()) {
             return session.createQuery("from User", User.class).getResultList();
         }
     }
 
     @Override
     public void save(User user) {
-        HibernateUtils.getSessionFactory().inTransaction(session -> session.persist(user));
+        HibernateUtils.getSessionFactory(connection).inTransaction(session -> session.persist(user));
     }
 
     @Override
     public void delete(Long id) {
-        HibernateUtils.getSessionFactory().inTransaction(session -> {
+        HibernateUtils.getSessionFactory(connection).inTransaction(session -> {
             User user = session.createQuery("from User where id=?1",User.class).
                     setParameter(1, id).uniqueResult();
             System.out.println("In delete we found this user: " + user);
@@ -76,7 +76,7 @@ public class UserDBRepo implements UserRepository {
 
     @Override
     public void update(User user) {
-        HibernateUtils.getSessionFactory().inTransaction(session -> {
+        HibernateUtils.getSessionFactory(connection).inTransaction(session -> {
             if (!Objects.isNull(session.find(User.class, user.getId()))) {
                 System.out.println("In update we found the user with id: " + user.getId());
                 session.merge(user);

@@ -1,6 +1,10 @@
 import deposit.domain.User;
+import deposit.repository.HibernateUtils;
 import deposit.repository.JdbcUtils;
 import deposit.repository.UserDBRepo;
+import org.hibernate.Session;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -10,7 +14,16 @@ import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.hibernate.SessionFactory;
+
 public class RepositoryTest {
+    private SessionFactory sessionFactory;
+    @BeforeEach
+    public void setUp() {
+        String inMemoryJdbcUrl = "jdbc:sqlite::memory:";
+        sessionFactory = HibernateUtils.createSessionFactoryWithCustomUrl(inMemoryJdbcUrl);
+    }
+
     private Connection createTestConnection() {
         var props = new Properties();
         props.setProperty("jdbc.driver", "org.sqlite.JDBC");
@@ -43,6 +56,13 @@ public class RepositoryTest {
             var users = repo.getAll();
 
             assertEquals(3, users.size());
+        }
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
         }
     }
 }

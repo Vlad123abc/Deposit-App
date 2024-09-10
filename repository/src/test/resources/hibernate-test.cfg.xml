@@ -4,11 +4,9 @@
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- Database connection settings -->
+        <!-- In-memory Database connection settings -->
         <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
-
-<!--        <property name="hibernate.connection.url">jdbc:sqlite:C:/Users/vlad/Documents/Projects/java_projects/DepositAppDB</property>-->
-
+        <property name="hibernate.connection.url">jdbc:sqlite::memory:</property>
         <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
         <property name="hibernate.connection.username"></property>
         <property name="hibernate.connection.password"></property>
@@ -25,7 +23,7 @@
         <property name="hibernate.show_sql">true</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <property name="hibernate.format_sql">true</property>
 
