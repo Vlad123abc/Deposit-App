@@ -21,6 +21,9 @@ test {
 buildDir = '../build'
 subprojects {
     buildDir = "${rootProject.buildDir}/${project.name}"
+    ext.logDir = "${buildDir}/logs"
+    logDir = "${buildDir}/logs"
+
     // Example for test reports
     tasks.withType(Test) {
         reports {
@@ -36,9 +39,11 @@ subprojects {
 
         // Configure the output directory for test logs
         doFirst {
+            file(logDir).mkdirs()            
             systemProperty "java.util.logging.config.file", file("${buildDir}/test-logs/logging.properties")
+            systemProperty "logDir", logDir
         }    
-        
+        systemProperty "logDir", logDir        
     }    
 }
 
