@@ -8,8 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RepositoryTest {
     private Connection createTestConnection() {
@@ -37,13 +36,74 @@ public class RepositoryTest {
             UserDBRepo repo = new UserDBRepo(conn);
             assertNotNull(repo);
 
-            repo.save(new User("vlad", "parola1"));
-            repo.save(new User("mark", "parola2"));
-            repo.save(new User("emma", "parola3"));
+            User user1 = new User("vlad", "parola1");
+            User user2 = new User("mark", "parola2");
+            User user3 = new User("emma", "parola3");
 
-            var users = repo.getAll();
+            repo.save(user1);
+            repo.save(user2);
+            repo.save(user3);
 
-            assertEquals(3, users.size());
+            assertEquals(3, repo.getAll().size());
+
+            assertEquals("parola1", repo.getByUsername("vlad").getPassword());
+
+            user1.setPassword("abcd");
+            repo.update(user1);
+
+            assertEquals("abcd", repo.getByUsername("vlad").getPassword());
+
+            repo.delete(1L);
+
+            assertEquals(2, repo.getAll().size());
+
+            assertNull(repo.getById(1L));
+            assertNotNull(repo.getById(2L));
+            assertNotNull(repo.getById(3L));
+        }
+    }
+
+    @Test
+    public void UserRepo_getByIdTest() throws SQLException
+    {
+        try (Connection conn = createTestConnection())
+        {
+            UserDBRepo repo = new UserDBRepo(conn);
+            assertNotNull(repo);
+
+            User user1 = new User("vlad", "parola1");
+            User user2 = new User("mark", "parola2");
+            User user3 = new User("emma", "parola3");
+
+            repo.save(user1);
+            repo.save(user2);
+            repo.save(user3);
+
+            assertEquals(user1, repo.getById(1L));
+            assertEquals(user2, repo.getById(2L));
+            assertEquals(user3, repo.getById(3L));
+        }
+    }
+
+    @Test
+    public void UserRepo_getByUsernameTest() throws SQLException
+    {
+        try (Connection conn = createTestConnection())
+        {
+            UserDBRepo repo = new UserDBRepo(conn);
+            assertNotNull(repo);
+
+            User user1 = new User("vlad", "parola1");
+            User user2 = new User("mark", "parola2");
+            User user3 = new User("emma", "parola3");
+
+            repo.save(user1);
+            repo.save(user2);
+            repo.save(user3);
+
+            assertEquals(user1, repo.getByUsername("vlad"));
+            assertEquals(user2, repo.getByUsername("mark"));
+            assertEquals(user3, repo.getByUsername("emma"));
         }
     }
 }
