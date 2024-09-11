@@ -5,7 +5,6 @@ import deposit.repository.UserRepository;
 import deposit.service.IObserver;
 import deposit.service.IService;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
