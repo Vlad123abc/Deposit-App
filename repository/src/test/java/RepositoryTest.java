@@ -1,7 +1,9 @@
 import deposit.domain.User;
+import deposit.repository.HibernateUtils;
 import deposit.repository.JdbcUtils;
 import deposit.repository.UserDBRepo;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -11,6 +13,12 @@ import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RepositoryTest {
+    // After each test, close the session factory to ensure a clean slate
+    @AfterEach
+    public void tearDown() {
+        HibernateUtils.closeSessionFactory();
+    }
+
     private Connection createTestConnection() {
         var props = new Properties();
         props.setProperty("jdbc.driver", "org.sqlite.JDBC");
