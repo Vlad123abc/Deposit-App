@@ -6,9 +6,7 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
-
 <!--        <property name="hibernate.connection.url">jdbc:sqlite:C:/Users/vlad/Documents/Projects/java_projects/DepositAppDB</property>-->
-
         <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
         <property name="hibernate.connection.username"></property>
         <property name="hibernate.connection.password"></property>
