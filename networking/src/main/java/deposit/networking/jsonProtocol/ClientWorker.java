@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 public class ClientWorker implements Runnable, IObserver {
     private IService server;
