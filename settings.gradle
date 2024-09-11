@@ -1,4 +1,5 @@
 rootProject.name = 'DepositApp'
 include 'domain'
 include 'repository'
+include 'service'
 
