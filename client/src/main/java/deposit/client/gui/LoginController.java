@@ -43,8 +43,7 @@ public class LoginController {
 
         this.userController = fxmlLoader.getController();
 
-        try
-        {
+        try {
             this.service.login(username, password, this.userController);
 
             this.textField.clear();
@@ -57,8 +56,7 @@ public class LoginController {
             stage.setScene(scene);
             stage.show();
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Autentication Failed!", "Wrong username or password!");
             this.passwordField.clear();
         }
