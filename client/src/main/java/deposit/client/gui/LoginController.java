@@ -38,7 +38,7 @@ public class LoginController {
         if (password.isEmpty())
             MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", "Completati Password!");
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("user-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/user-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 800);
 
         this.userController = fxmlLoader.getController();

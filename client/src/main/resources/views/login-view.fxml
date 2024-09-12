@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="deposit.client.gui.LoginController">
+   <children>
+      <Label layoutX="50.0" layoutY="70.0" text="Username:" />
+      <Label layoutX="50.0" layoutY="120.0" text="Password:" />
+      <TextField layoutX="160.0" layoutY="66.0" />
+      <TextField layoutX="160.0" layoutY="116.0" />
+      <Button layoutX="257.0" layoutY="175.0" mnemonicParsing="false" text="Login" />
+   </children>
+</AnchorPane>

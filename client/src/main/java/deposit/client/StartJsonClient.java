@@ -52,13 +52,13 @@ public class StartJsonClient extends Application {
         var input = new BufferedReader(new InputStreamReader((socket).getInputStream()));
         IService server = new ServiceProxy(socket, input, output);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 300);
 
         LoginController loginController = fxmlLoader.getController();
         loginController.initController(server);
 
-        FXMLLoader fxmlLoaderUser = new FXMLLoader(getClass().getClassLoader().getResource("user-view.fxml"));
+        FXMLLoader fxmlLoaderUser = new FXMLLoader(getClass().getClassLoader().getResource("views/user-view.fxml"));
         UserController userController = fxmlLoaderUser.getController();
         loginController.setUserController(userController);
 
