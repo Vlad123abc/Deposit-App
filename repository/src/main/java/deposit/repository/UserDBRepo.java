@@ -88,9 +88,10 @@ public class UserDBRepo implements UserRepository {
     @Override
     public User getByUsername(String username) {
         try (Session session = HibernateUtils.getSessionFactory(connection).openSession()) {
-            return session.createSelectionQuery("from User where username =:usernameU ", User.class)
+            return session.createSelectionQuery("from User where username =:usernameU", User.class)
                     .setParameter("usernameU", username)
-                    .getSingleResultOrNull();
+                    .setMaxResults(1)  // Limit the result to only one user
+                    .uniqueResult();   // Use uniqueResult() to return the single result or null
         }
     }
 }

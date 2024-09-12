@@ -104,10 +104,12 @@ public class RepositoryTest {
             User user1 = new User("vlad", "parola1");
             User user2 = new User("mark", "parola2");
             User user3 = new User("emma", "parola3");
+            User user4 = new User("vlad", "parola4");
 
             repo.save(user1);
             repo.save(user2);
             repo.save(user3);
+            repo.save(user4);
 
             assertEquals(user1, repo.getByUsername("vlad"));
             assertEquals(user2, repo.getByUsername("mark"));
