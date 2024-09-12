@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.javamodularity.moduleplugin' version '1.8.12'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '2.25.0'
+}
+
+group = 'deposit.client'
+version = '1.0-SNAPSHOT'
+
+def mainClassName=project.properties['mainClassName'] ?: 'deposit.client.StartJsonClient'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.9.2'
+}
+
+application{
+    mainClass = mainClassName
+}
+
+dependencies {
+    implementation project(path: ':service')
+    implementation project(path: ':domain')
+    implementation project(path: ':networking')
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
