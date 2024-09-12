@@ -50,9 +50,8 @@ public class LoginController {
             this.textField.clear();
             this.passwordField.clear();
 
-            //TODO
-//            User user = this.service.getUserByUsername(username);
-//            this.userController.init_controller(this.service, user);
+            User user = this.service.getUserByUsername(username);
+            this.userController.init_controller(this.service, user);
             Stage stage = new Stage();
             stage.setTitle(username);
             stage.setScene(scene);

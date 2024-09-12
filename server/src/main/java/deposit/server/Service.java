@@ -1,10 +1,12 @@
 package deposit.server;
 
+import deposit.domain.Package;
 import deposit.domain.User;
 import deposit.repository.UserRepository;
 import deposit.service.IObserver;
 import deposit.service.IService;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,5 +37,15 @@ public class Service implements IService {
         IObserver localClient = loggedClients.remove(user.getId());
         if (localClient == null)
             throw new Exception("User " + user.getUsername() + " is not logged in.");
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return this.userRepository.getByUsername(username);
+    }
+
+    @Override
+    public List<Package> getAllPackages() {
+        return null;
     }
 }

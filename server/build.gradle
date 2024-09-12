@@ -1,12 +1,19 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'deposit.server'
 version = '1.0-SNAPSHOT'
 
+def mainClassName=project.properties['mainClassName'] ?: 'deposit.server.StartServer'
+
 repositories {
     mavenCentral()
+}
+
+application{
+    mainClass = mainClassName
 }
 
 dependencies {

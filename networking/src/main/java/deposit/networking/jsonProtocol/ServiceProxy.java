@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -117,6 +118,33 @@ public class ServiceProxy implements IService {
             System.out.println("Closing connection...");
             throw new Exception(err);
         }
+    }
+
+    @Override
+    public User getUserByUsername(String username) throws Exception {
+        Request req = new Request.Builder().setType(RequestType.GET_USER_BY_USERNAME).setData(username).build();
+
+        System.out.println("Sending getUserByUsername Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived getUserByUsername Response: " + response.toString());
+
+        if (response.getType() == ResponseType.OK) {
+            System.out.println("getUserByUsername OK");
+            return gsonFormatter.fromJson(response.getData().toString(), User.class);
+        }
+        if (response.getType() == ResponseType.ERROR) {
+            String err = (String) response.getData();
+            System.out.println("Closing connection...");
+            closeConnection();
+            throw new Exception(err);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Package> getAllPackages() {
+        return null;
     }
 
     private void handleUpdate(Response response) {
