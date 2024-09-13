@@ -174,4 +174,56 @@ public class RepositoryTest {
             assertNotNull(repo.getById(3L));
         }
     }
+
+    @Test
+    public void PackageRepo_getByIdTest() throws SQLException
+    {
+        try (Connection conn = createTestConnection())
+        {
+            PackageRepository repo = new PackageDBRepo(conn);
+            assertNotNull(repo);
+
+            Package pack1 = new Package("pack1", "vlad", "mark", "big", 10F, false);
+            Package pack2 = new Package("pack1", "mark", "emma", "small", 5F, true);
+            Package pack3 = new Package("pack2", "emma", "vlad", "big", 15F, false);
+
+            repo.save(pack1);
+            repo.save(pack2);
+            repo.save(pack3);
+
+            assertEquals(3, repo.getAll().size());
+
+            assertEquals(pack1, repo.getById(1L));
+            assertEquals(pack2, repo.getById(2L));
+            assertEquals(pack3, repo.getById(3L));
+        }
+    }
+
+    @Test
+    void PackageRepo_GetByNameTest() throws SQLException
+    {
+        try (Connection conn = createTestConnection())
+        {
+            PackageRepository repo = new PackageDBRepo(conn);
+            assertNotNull(repo);
+
+            Package pack1 = new Package("a", "vlad", "mark", "big", 10F, false);
+            Package pack2 = new Package("a", "mark", "emma", "small", 5F, true);
+            Package pack3 = new Package("b", "emma", "vlad", "big", 15F, false);
+
+            repo.save(pack1);
+            repo.save(pack2);
+            repo.save(pack3);
+
+            List<Package> packageList_a = new ArrayList<>();
+            packageList_a.add(pack1);
+            packageList_a.add(pack2);
+
+            List<Package> packageList_b = new ArrayList<>();
+            packageList_b.add(pack3);
+
+            assertEquals(packageList_a, repo.getByName("a"));
+            assertEquals(packageList_b, repo.getByName("b"));
+        }
+    }
 }
