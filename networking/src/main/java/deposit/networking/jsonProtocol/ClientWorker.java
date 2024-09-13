@@ -118,7 +118,7 @@ public class ClientWorker implements Runnable, IObserver {
                 return new Response.Builder().setType(ResponseType.OK).build();
             }
             catch (Exception e) {
-                connected = false;
+                //connected = false;
                 return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
             }
         }

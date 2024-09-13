@@ -95,8 +95,8 @@ public class ServiceProxy implements IService {
         }
         if (response.getType() == ResponseType.ERROR) {
             String err = (String) response.getData();
-            System.out.println("Closing connection...");
-            closeConnection();
+            //System.out.println("Closing connection...");
+            //closeConnection();
             throw new Exception(err);
         }
     }

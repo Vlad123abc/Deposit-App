@@ -46,18 +46,24 @@ public class LoginController {
             try {
                 this.service.login(username, password, this.userController);
 
-                this.textField.clear();
-                this.passwordField.clear();
-
                 User user = this.service.getUserByUsername(username);
                 this.userController.init_controller(this.service, user);
                 Stage stage = new Stage();
                 stage.setTitle(username);
                 stage.setScene(scene);
                 stage.show();
+
+                Stage thisStage = (Stage) textField.getScene().getWindow();
+                thisStage.close();
             }
             catch (Exception e) {
-                MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Autentication Failed!", "Wrong username or password!");
+                String err = e.getMessage();
+                if (err.equals("User already logged in.")) {
+                    this.textField.clear();
+                    MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Autentication Failed!", "User already logged in!");
+                }
+                else
+                    MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Autentication Failed!", "Wrong username or password!");
                 this.passwordField.clear();
             }
         }
