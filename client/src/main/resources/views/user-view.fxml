@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="deposit.client.gui.UserController">
    <children>
-      <Button fx:id="logoutBtn" layoutX="500.0" layoutY="50.0" mnemonicParsing="false" text="Logout" onAction="#onLogout"/>
+      <Button fx:id="logoutBtn" layoutX="500.0" layoutY="50.0" mnemonicParsing="false" onAction="#onLogout" text="Logout" />
+      <Label layoutX="30.0" layoutY="30.0" text="Packages:" />
    </children>
 </AnchorPane>

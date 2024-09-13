@@ -29,5 +29,6 @@
 
         <!-- List of annotated classes -->
         <mapping class="deposit.domain.User"/>
+        <mapping class="deposit.domain.Package"/>
     </session-factory>
 </hibernate-configuration>

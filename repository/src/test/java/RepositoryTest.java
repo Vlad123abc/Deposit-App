@@ -1,13 +1,14 @@
+import deposit.domain.Package;
 import deposit.domain.User;
-import deposit.repository.HibernateUtils;
-import deposit.repository.JdbcUtils;
-import deposit.repository.UserDBRepo;
+import deposit.repository.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +32,15 @@ public class RepositoryTest {
     @Test
     public void userRepoSmokeTest()  throws SQLException {
         try (Connection conn = createTestConnection()) {
-            UserDBRepo repo = new UserDBRepo(conn);
+            UserRepository repo = new UserDBRepo(conn);
+            assertNotNull(repo);
+        }
+    }
+
+    @Test
+    public void PackageRepoSmokeTest()  throws SQLException {
+        try (Connection conn = createTestConnection()) {
+            PackageRepository repo = new PackageDBRepo(conn);
             assertNotNull(repo);
         }
     }
@@ -41,7 +50,7 @@ public class RepositoryTest {
     {
         try (Connection conn = createTestConnection())
         {
-            UserDBRepo repo = new UserDBRepo(conn);
+            UserRepository repo = new UserDBRepo(conn);
             assertNotNull(repo);
 
             User user1 = new User("vlad", "parola1");
@@ -53,6 +62,11 @@ public class RepositoryTest {
             repo.save(user3);
 
             assertEquals(3, repo.getAll().size());
+
+            List<User> userList = repo.getAll();
+            assertEquals(userList.get(0), user1);
+            assertEquals(userList.get(1), user2);
+            assertEquals(userList.get(2), user3);
 
             assertEquals("parola1", repo.getByUsername("vlad").getPassword());
 
@@ -76,7 +90,7 @@ public class RepositoryTest {
     {
         try (Connection conn = createTestConnection())
         {
-            UserDBRepo repo = new UserDBRepo(conn);
+            UserRepository repo = new UserDBRepo(conn);
             assertNotNull(repo);
 
             User user1 = new User("vlad", "parola1");
@@ -98,7 +112,7 @@ public class RepositoryTest {
     {
         try (Connection conn = createTestConnection())
         {
-            UserDBRepo repo = new UserDBRepo(conn);
+            UserRepository repo = new UserDBRepo(conn);
             assertNotNull(repo);
 
             User user1 = new User("vlad", "parola1");
@@ -114,6 +128,49 @@ public class RepositoryTest {
             assertEquals(user1, repo.getByUsername("vlad"));
             assertEquals(user2, repo.getByUsername("mark"));
             assertEquals(user3, repo.getByUsername("emma"));
+        }
+    }
+
+    @Test
+    public void PackageRepo_getAllTest() throws SQLException
+    {
+        try (Connection conn = createTestConnection())
+        {
+            PackageRepository repo = new PackageDBRepo(conn);
+            assertNotNull(repo);
+
+            Package pack1 = new Package("pack1", "vlad", "mark", "big", 10F, false);
+            Package pack2 = new Package("pack1", "mark", "emma", "small", 5F, true);
+            Package pack3 = new Package("pack2", "emma", "vlad", "big", 15F, false);
+
+            repo.save(pack1);
+            repo.save(pack2);
+            repo.save(pack3);
+
+            assertEquals(3, repo.getAll().size());
+
+            List<Package> packageList = repo.getAll();
+            assertEquals(packageList.get(0), pack1);
+            assertEquals(packageList.get(1), pack2);
+            assertEquals(packageList.get(2), pack3);
+
+            List<Package> packageList_pack1 = new ArrayList<>();
+            packageList_pack1.add(pack1);
+            packageList_pack1.add(pack2);
+            assertEquals(packageList_pack1, repo.getByName("pack1"));
+
+            pack1.setDescription("medium");
+            repo.update(pack1);
+
+            assertEquals("medium", repo.getById(1L).getDescription());
+
+            repo.delete(1L);
+
+            assertEquals(2, repo.getAll().size());
+
+            assertNull(repo.getById(1L));
+            assertNotNull(repo.getById(2L));
+            assertNotNull(repo.getById(3L));
         }
     }
 }
