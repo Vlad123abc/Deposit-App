@@ -112,12 +112,12 @@ public class ClientWorker implements Runnable, IObserver {
         if (request.getType() == RequestType.LOGIN)
         {
             System.out.println("Login request ..." + request.getType());
-            // User user = (User) request.getData();
             User user = gsonFormatter.fromJson(request.getData().toString(), User.class);
             try {
                 server.login(user.getUsername(), user.getPassword(), this);
                 return new Response.Builder().setType(ResponseType.OK).build();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 connected = false;
                 return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
             }
@@ -127,13 +127,11 @@ public class ClientWorker implements Runnable, IObserver {
         {
             System.out.println("Logout request ..." + request.getType());
             User user = gsonFormatter.fromJson(request.getData().toString(), User.class);
-            try
-            {
+            try {
                 server.logout(user, this);
                 return new Response.Builder().setType(ResponseType.OK).build();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 connected = false;
                 return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
             }

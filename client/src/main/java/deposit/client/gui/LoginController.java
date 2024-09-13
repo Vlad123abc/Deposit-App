@@ -35,30 +35,31 @@ public class LoginController {
 
         if (username.isEmpty())
             MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", "Completati Username!");
-        if (password.isEmpty())
+        else if (password.isEmpty())
             MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", "Completati Password!");
+        else {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/user-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 800);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/user-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 800);
+            this.userController = fxmlLoader.getController();
 
-        this.userController = fxmlLoader.getController();
+            try {
+                this.service.login(username, password, this.userController);
 
-        try {
-            this.service.login(username, password, this.userController);
+                this.textField.clear();
+                this.passwordField.clear();
 
-            this.textField.clear();
-            this.passwordField.clear();
-
-            User user = this.service.getUserByUsername(username);
-            this.userController.init_controller(this.service, user);
-            Stage stage = new Stage();
-            stage.setTitle(username);
-            stage.setScene(scene);
-            stage.show();
-        }
-        catch (Exception e) {
-            MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Autentication Failed!", "Wrong username or password!");
-            this.passwordField.clear();
+                User user = this.service.getUserByUsername(username);
+                this.userController.init_controller(this.service, user);
+                Stage stage = new Stage();
+                stage.setTitle(username);
+                stage.setScene(scene);
+                stage.show();
+            }
+            catch (Exception e) {
+                MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Autentication Failed!", "Wrong username or password!");
+                this.passwordField.clear();
+            }
         }
     }
 }
