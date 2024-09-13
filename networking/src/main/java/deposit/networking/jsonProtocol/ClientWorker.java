@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class ClientWorker implements Runnable, IObserver {
     private IService server;
@@ -107,10 +108,8 @@ public class ClientWorker implements Runnable, IObserver {
         }
     }
 
-    private Response handleRequest(Request request)
-    {
-        if (request.getType() == RequestType.LOGIN)
-        {
+    private Response handleRequest(Request request) {
+        if (request.getType() == RequestType.LOGIN) {
             System.out.println("Login request ..." + request.getType());
             User user = gsonFormatter.fromJson(request.getData().toString(), User.class);
             try {
@@ -123,13 +122,26 @@ public class ClientWorker implements Runnable, IObserver {
             }
         }
 
-        if (request.getType() == RequestType.LOGOUT)
-        {
+        if (request.getType() == RequestType.LOGOUT) {
             System.out.println("Logout request ..." + request.getType());
             User user = gsonFormatter.fromJson(request.getData().toString(), User.class);
             try {
                 server.logout(user, this);
+                connected = false;
                 return new Response.Builder().setType(ResponseType.OK).build();
+            }
+            catch (Exception e) {
+                //connected = false;
+                return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
+            }
+        }
+
+        if (request.getType() == RequestType.GET_USER_BY_USERNAME) {
+            System.out.println("GET_USER_BY_USERNAME request ...");
+            try {
+                String username = gsonFormatter.fromJson(request.getData().toString(), String.class);
+                User user = this.server.getUserByUsername(username);
+                return new Response.Builder().setType(ResponseType.OK).setData(user).build();
             }
             catch (Exception e) {
                 connected = false;
@@ -137,13 +149,12 @@ public class ClientWorker implements Runnable, IObserver {
             }
         }
 
-        if (request.getType() == RequestType.GET_USER_BY_USERNAME)
-        {
-            System.out.println("GET_USER_BY_USERNAME request ...");
+        if (request.getType() == RequestType.GET_ALL_PACKAGES){
+            System.out.println("GET_ALL_PACKAGES request ..." + request.getType());
             try {
-                String username = gsonFormatter.fromJson(request.getData().toString(), String.class);
-                User user = this.server.getUserByUsername(username);
-                return new Response.Builder().setType(ResponseType.OK).setData(user).build();
+                List<Package> packages = this.server.getAllPackages();
+                System.out.println("number of packages found: " + packages.size());
+                return new Response.Builder().setType(ResponseType.OK).setData(packages).build();
             }
             catch (Exception e) {
                 connected = false;

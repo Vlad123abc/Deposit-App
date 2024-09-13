@@ -2,9 +2,7 @@ package deposit.server;
 
 import deposit.networking.utils.AbstractServer;
 import deposit.networking.utils.JsonConcurrentServer;
-import deposit.repository.JdbcUtils;
-import deposit.repository.UserDBRepo;
-import deposit.repository.UserRepository;
+import deposit.repository.*;
 import deposit.service.IService;
 
 import java.io.IOException;
@@ -30,8 +28,9 @@ public class StartServer {
         Connection conn = dbUtils.getConnection();
 
         UserRepository userRepo = new UserDBRepo(conn);
+        PackageRepository packageRepo = new PackageDBRepo(conn);
 
-        IService service = new Service(userRepo);
+        IService service = new Service(userRepo, packageRepo);
 
         int ServerPort = defaultPort;
         try {

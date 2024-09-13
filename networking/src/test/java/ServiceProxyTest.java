@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import deposit.domain.Package;
 import deposit.domain.User;
 import deposit.networking.jsonProtocol.Response;
 import deposit.networking.jsonProtocol.ResponseType;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.*;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

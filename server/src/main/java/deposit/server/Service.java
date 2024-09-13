@@ -2,6 +2,7 @@ package deposit.server;
 
 import deposit.domain.Package;
 import deposit.domain.User;
+import deposit.repository.PackageRepository;
 import deposit.repository.UserRepository;
 import deposit.service.IObserver;
 import deposit.service.IService;
@@ -13,10 +14,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Service implements IService {
     private UserRepository userRepository;
+    private PackageRepository packageRepository;
     private Map<Long, IObserver> loggedClients;
 
-    public Service(UserRepository userRepository) {
+    public Service(UserRepository userRepository, PackageRepository packageRepository) {
         this.userRepository = userRepository;
+        this.packageRepository = packageRepository;
         this.loggedClients = new ConcurrentHashMap<>();
     }
 
@@ -46,6 +49,6 @@ public class Service implements IService {
 
     @Override
     public List<Package> getAllPackages() {
-        return null;
+        return this.packageRepository.getAll();
     }
 }

@@ -10,5 +10,5 @@ public interface IService {
     void logout(User user, IObserver client) throws Exception;
 
     User getUserByUsername(String username) throws Exception;
-    List<Package> getAllPackages();
+    List<Package> getAllPackages() throws Exception;
 }

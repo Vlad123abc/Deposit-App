@@ -1,9 +1,6 @@
 import deposit.domain.Package;
 import deposit.domain.User;
-import deposit.repository.HibernateUtils;
-import deposit.repository.JdbcUtils;
-import deposit.repository.UserDBRepo;
-import deposit.repository.UserRepository;
+import deposit.repository.*;
 import deposit.server.Service;
 import deposit.service.IObserver;
 import org.junit.jupiter.api.AfterEach;
@@ -34,12 +31,17 @@ public class ServerTests {
         Connection conn = dbUtils.getConnection();
 
         UserRepository userRepository = new UserDBRepo(conn);
+        PackageRepository packageRepository = new PackageDBRepo(conn);
 
         userRepository.save(new User("vlad", "parola1"));
         userRepository.save(new User("mark", "parola2"));
         userRepository.save(new User("emma", "parola3"));
 
-        return new Service(userRepository);
+        packageRepository.save(new Package("pack1", "vlad", "mark", "medium", 10F, false));
+        packageRepository.save(new Package("pack2", "mark", "emma", "little", 5F, true));
+        packageRepository.save(new Package("pack3", "emma", "vlad", "big", 15F, false));
+
+        return new Service(userRepository, packageRepository);
     }
 
     @Test
@@ -116,5 +118,17 @@ public class ServerTests {
         catch (Exception e) {
             fail();
         }
+    }
+
+    @Test
+    void getAllPackagesTest(){
+        Service service = this.createTestService();
+
+        var packages = service.getAllPackages();
+        assertEquals(3, packages.size());
+
+        assertEquals("pack1", packages.get(0).getName());
+        assertEquals("pack2", packages.get(1).getName());
+        assertEquals("pack3", packages.get(2).getName());
     }
 }

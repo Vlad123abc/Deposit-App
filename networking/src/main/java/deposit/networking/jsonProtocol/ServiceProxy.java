@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -93,7 +94,7 @@ public class ServiceProxy implements IService {
             System.out.println("Login OK");
             this.client = client;
         }
-        if (response.getType() == ResponseType.ERROR) {
+        else if (response.getType() == ResponseType.ERROR) {
             String err = (String) response.getData();
             //System.out.println("Closing connection...");
             //closeConnection();
@@ -108,14 +109,13 @@ public class ServiceProxy implements IService {
         sendRequest(req);
         Response response = readResponse();
         System.out.println("Recived Logout Response: " + response.toString());
-        this.closeConnection();
         if (response.getType() == ResponseType.OK) {
             System.out.println("Logout OK");
-            // close connection ?
-        }
-        if (response.getType() == ResponseType.ERROR) {
-            String err = (String) response.getData();
             System.out.println("Closing connection...");
+            this.closeConnection();
+        }
+        else if (response.getType() == ResponseType.ERROR) {
+            String err = (String) response.getData();
             throw new Exception(err);
         }
     }
@@ -133,7 +133,7 @@ public class ServiceProxy implements IService {
             System.out.println("getUserByUsername OK");
             return gsonFormatter.fromJson(response.getData().toString(), User.class);
         }
-        if (response.getType() == ResponseType.ERROR) {
+        else if (response.getType() == ResponseType.ERROR) {
             String err = (String) response.getData();
             System.out.println("Closing connection...");
             closeConnection();
@@ -143,8 +143,31 @@ public class ServiceProxy implements IService {
     }
 
     @Override
-    public List<Package> getAllPackages() {
-        return null;
+    public List<Package> getAllPackages() throws Exception {
+        Request req = new Request.Builder().setType(RequestType.GET_ALL_PACKAGES).build();
+
+        System.out.println("Sending getAllPackages Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived getAllPackages Response: " + response.toString());
+
+        List<Package> packageList = new ArrayList<>();
+        if (response.getType() == ResponseType.OK)
+        {
+            if (response.getData() == null)
+                return packageList;
+            var list = gsonFormatter.fromJson(response.getData().toString(), packageList.getClass());
+            for (var pack : list) {
+                Package c = gsonFormatter.fromJson(pack.toString(), Package.class);
+                packageList.add(c);
+            }
+        }
+        else if (response.getType() == ResponseType.ERROR) {
+            closeConnection();
+            String err = response.getData().toString();
+            throw new Exception(err);
+        }
+        return packageList;
     }
 
     private void handleUpdate(Response response) {
