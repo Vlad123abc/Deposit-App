@@ -1,9 +1,7 @@
 import com.google.gson.Gson;
 import deposit.domain.Package;
 import deposit.domain.User;
-import deposit.networking.jsonProtocol.Response;
-import deposit.networking.jsonProtocol.ResponseType;
-import deposit.networking.jsonProtocol.ServiceProxy;
+import deposit.networking.jsonProtocol.*;
 import deposit.service.IObserver;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -53,8 +51,8 @@ public class ServiceProxyTest {
         Gson gson = new Gson();
 
         // was the login sent all?
-        var sentData = gson.fromJson(writtenLine, Response.class);
-        assertEquals(ResponseType.LOGIN, sentData.getType());
+        var sentData = gson.fromJson(writtenLine, Request.class);
+        assertEquals(RequestType.LOGIN, sentData.getType());
 
         // ... add verification to see user and pass
         User user = gson.fromJson(sentData.getData().toString(), User.class);
@@ -111,8 +109,8 @@ public class ServiceProxyTest {
         Gson gson = new Gson();
 
         // was the login sent all?
-        var sentData = gson.fromJson(writtenLine, Response.class);
-        assertEquals(ResponseType.LOGIN, sentData.getType());
+        var sentData = gson.fromJson(writtenLine, Request.class);
+        assertEquals(RequestType.LOGIN, sentData.getType());
         // ... add verification to see user and pass
         User user = gson.fromJson(sentData.getData().toString(), User.class);
         assertEquals(user.getUsername(), "vlad");
@@ -120,8 +118,8 @@ public class ServiceProxyTest {
 
         var logoutLine = whatWasWrittenCheckInput.readLine();
         // was the login sent all?
-        var logoutData = gson.fromJson(logoutLine, Response.class);
-        assertEquals(ResponseType.LOGOUT, logoutData.getType());
+        var logoutData = gson.fromJson(logoutLine, Request.class);
+        assertEquals(RequestType.LOGOUT, logoutData.getType());
         user = gson.fromJson(logoutData.getData().toString(), User.class);
         assertEquals(user.getUsername(), "vlad");
         assertEquals(user.getPassword(), "parola");
