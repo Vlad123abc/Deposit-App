@@ -226,4 +226,33 @@ public class RepositoryTest {
             assertEquals(packageList_b, repo.getByName("b"));
         }
     }
+
+    @Test
+    void PackageRepo_GetFromToTest() throws SQLException
+    {
+        try (Connection conn = createTestConnection())
+        {
+            PackageRepository repo = new PackageDBRepo(conn);
+            assertNotNull(repo);
+
+            Package pack1 = new Package("a", "a", "c", "big", 10F, false);
+            Package pack2 = new Package("b", "a", "b", "small", 5F, true);
+            Package pack3 = new Package("c", "c", "b", "big", 15F, false);
+
+            repo.save(pack1);
+            repo.save(pack2);
+            repo.save(pack3);
+
+            List<Package> packageList_from_a = new ArrayList<>();
+            packageList_from_a.add(pack1);
+            packageList_from_a.add(pack2);
+
+            List<Package> packageList_to_b = new ArrayList<>();
+            packageList_to_b.add(pack2);
+            packageList_to_b.add(pack3);
+
+            assertEquals(packageList_from_a, repo.getByFrom("a"));
+            assertEquals(packageList_to_b, repo.getByTo("b"));
+        }
+    }
 }

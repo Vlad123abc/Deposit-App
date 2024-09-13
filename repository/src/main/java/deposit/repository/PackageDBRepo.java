@@ -57,6 +57,24 @@ public class PackageDBRepo implements PackageRepository{
     }
 
     @Override
+    public List<Package> getByFrom(String p_from) {
+        try (Session session = HibernateUtils.getSessionFactory(connection).openSession()) {
+            return session.createSelectionQuery("from Package where p_from =:p_fromP ", Package.class)
+                    .setParameter("p_fromP", p_from)
+                    .getResultList();
+        }
+    }
+
+    @Override
+    public List<Package> getByTo(String p_to) {
+        try (Session session = HibernateUtils.getSessionFactory(connection).openSession()) {
+            return session.createSelectionQuery("from Package where p_to =:p_toP ", Package.class)
+                    .setParameter("p_toP", p_to)
+                    .getResultList();
+        }
+    }
+
+    @Override
     public Package getById(Long id) {
         try (Session session = HibernateUtils.getSessionFactory(connection).openSession()) {
             return session.createSelectionQuery("from Package where id =:idP ", Package.class)
