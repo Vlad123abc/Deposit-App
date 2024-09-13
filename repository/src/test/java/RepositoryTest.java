@@ -162,6 +162,7 @@ public class RepositoryTest {
             pack1.setDescription("medium");
             repo.update(pack1);
 
+            assertEquals(1L, pack1.getId());
             assertEquals("medium", repo.getById(1L).getDescription());
 
             repo.delete(1L);

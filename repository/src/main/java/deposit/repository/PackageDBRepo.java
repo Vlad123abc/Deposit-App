@@ -1,7 +1,6 @@
 package deposit.repository;
 
 import deposit.domain.Package;
-import deposit.domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -94,8 +93,8 @@ public class PackageDBRepo implements PackageRepository{
     @Override
     public void update(Package pack) {
         HibernateUtils.getSessionFactory(connection).inTransaction(session -> {
-            if (!Objects.isNull(session.find(User.class, pack.getId()))) {
-                System.out.println("In update we found the packahe with id: " + pack.getId());
+            if (!Objects.isNull(session.find(Package.class, pack.getId()))) {
+                System.out.println("In update we found the package with id: " + pack.getId());
                 session.merge(pack);
                 session.flush();
             }

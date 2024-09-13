@@ -8,25 +8,25 @@ import java.util.Objects;
 @Table(name = "Packages")
 public class Package extends MyEntity<Long>{
     private String name;
-    private String from;
-    private String to;
+    private String p_from;
+    private String p_to;
     private String description;
     private Float weight;
     private Boolean fragile;
 
     public Package() {
         this.name = "";
-        this.from = "";
-        this.to = "";
+        this.p_from = "";
+        this.p_to = "";
         this.description = "";
         this.weight = 0F;
         this.fragile = false;
     }
 
-    public Package(String name, String from, String to, String description, Float weight, Boolean fragile) {
+    public Package(String name, String p_from, String p_to, String description, Float weight, Boolean fragile) {
         this.name = name;
-        this.from = from;
-        this.to = to;
+        this.p_from = p_from;
+        this.p_to = p_to;
         this.description = description;
         this.weight = weight;
         this.fragile = fragile;
@@ -40,20 +40,20 @@ public class Package extends MyEntity<Long>{
         this.name = name;
     }
 
-    public String getFrom() {
-        return from;
+    public String getP_from() {
+        return p_from;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setP_from(String p_from) {
+        this.p_from = p_from;
     }
 
-    public String getTo() {
-        return to;
+    public String getP_to() {
+        return p_to;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setP_to(String to) {
+        this.p_to = to;
     }
 
     public String getDescription() {
@@ -86,20 +86,20 @@ public class Package extends MyEntity<Long>{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Package aPackage = (Package) o;
-        return Objects.equals(name, aPackage.name) && Objects.equals(from, aPackage.from) && Objects.equals(to, aPackage.to) && Objects.equals(description, aPackage.description) && Objects.equals(weight, aPackage.weight) && Objects.equals(fragile, aPackage.fragile);
+        return Objects.equals(name, aPackage.name) && Objects.equals(p_from, aPackage.p_from) && Objects.equals(p_to, aPackage.p_to) && Objects.equals(description, aPackage.description) && Objects.equals(weight, aPackage.weight) && Objects.equals(fragile, aPackage.fragile);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, from, to, description, weight, fragile);
+        return Objects.hash(super.hashCode(), name, p_from, p_to, description, weight, fragile);
     }
 
     @Override
     public String toString() {
         return "Package{" +
                 "name='" + name + '\'' +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
+                ", from='" + p_from + '\'' +
+                ", to='" + p_to + '\'' +
                 ", description='" + description + '\'' +
                 ", weight=" + weight +
                 ", fragile=" + fragile +
