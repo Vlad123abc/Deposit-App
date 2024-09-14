@@ -4,6 +4,8 @@ import deposit.domain.Package;
 import deposit.domain.User;
 import deposit.service.IObserver;
 import deposit.service.IService;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,8 +17,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserController implements IObserver {
     private IService service;
@@ -62,6 +62,20 @@ public class UserController implements IObserver {
         packageFragileTableColumn.setCellValueFactory(new PropertyValueFactory<>("fragile"));
 
         packageTableView.setItems(modelPackages);
+
+        // Add listener for row selection changes
+        packageTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Package>() {
+            @Override
+            public void changed(ObservableValue<? extends Package> observable, Package oldValue, Package newValue) {
+                if (newValue != null) {
+                    // Update the text area with the description of the selected package
+                    packageDescriptionTextArea.setText(newValue.getDescription());
+                } else {
+                    // Clear the text area if no package is selected
+                    packageDescriptionTextArea.clear();
+                }
+            }
+        });
     }
 
     private void initModel() throws Exception
