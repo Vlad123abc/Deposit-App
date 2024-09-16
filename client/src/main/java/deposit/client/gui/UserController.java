@@ -4,6 +4,7 @@ import deposit.domain.Package;
 import deposit.domain.User;
 import deposit.service.IObserver;
 import deposit.service.IService;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -87,9 +88,15 @@ public class UserController implements IObserver {
                 if (newValue != null) {
                     // Update the text area with the description of the selected package
                     packageDescriptionTextArea.setText(newValue.getDescription());
+
+                    updateButton.setDisable(false);
+                    deleteButton.setDisable(false);
                 } else {
                     // Clear the text area if no package is selected
                     packageDescriptionTextArea.clear();
+
+                    updateButton.setDisable(true);
+                    deleteButton.setDisable(true);
                 }
             }
         });
@@ -100,21 +107,45 @@ public class UserController implements IObserver {
         System.out.println("Init Model!");
         var packages = this.service.getAllPackages();
         this.modelPackages.setAll(packages);
+
+        updateButton.setDisable(true);
+        deleteButton.setDisable(true);
     }
 
     @Override
     public void packageSaved(Package pack) throws Exception {
-
+        Platform.runLater(() -> {
+            try {
+                var packages = this.service.getAllPackages();
+                modelPackages.setAll(packages);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
     public void packageUpdated(Package pack) throws Exception {
-
+        Platform.runLater(() -> {
+            try {
+                var packages = this.service.getAllPackages();
+                modelPackages.setAll(packages);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
     public void packageDeleted(Long id) throws Exception {
-
+        Platform.runLater(() -> {
+            try {
+                var packages = this.service.getAllPackages();
+                modelPackages.setAll(packages);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void onLogout(ActionEvent actionEvent) throws Exception {
@@ -122,5 +153,13 @@ public class UserController implements IObserver {
         stage.close(); // Close the stage
 
         this.service.logout(this.user, this);
+    }
+
+
+    public void onSavePackage(ActionEvent actionEvent) {
+    }
+    public void onUpdatePackage(ActionEvent actionEvent) {
+    }
+    public void onDeletePackage(ActionEvent actionEvent) {
     }
 }

@@ -35,8 +35,8 @@
       <TextField fx:id="weghtTextField" layoutX="120.0" layoutY="538.0" />
       <CheckBox fx:id="fragileTextBox" layoutX="30.0" layoutY="575.0" mnemonicParsing="false" text="Fragile" />
 
-      <Button fx:id="saveButton" layoutX="320.0" layoutY="336.0" mnemonicParsing="false" text="Save" />
-      <Button fx:id="updateButton" layoutX="400.0" layoutY="336.0" mnemonicParsing="false" text="Update" />
-      <Button fx:id="deleteButton" layoutX="480.0" layoutY="336.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="saveButton" layoutX="320.0" layoutY="336.0" mnemonicParsing="false" text="Save" onAction="#onSavePackage"/>
+      <Button fx:id="updateButton" layoutX="400.0" layoutY="336.0" mnemonicParsing="false" text="Update" onAction="#onUpdatePackage"/>
+      <Button fx:id="deleteButton" layoutX="480.0" layoutY="336.0" mnemonicParsing="false" text="Delete" onAction="#onDeletePackage"/>
    </children>
 </AnchorPane>
