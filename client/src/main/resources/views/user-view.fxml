@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="deposit.client.gui.UserController">
    <children>
-      <Button fx:id="logoutBtn" layoutX="700.0" layoutY="550.0" mnemonicParsing="false" onAction="#onLogout" text="Logout" />
+      <Button fx:id="logoutBtn" layoutX="700.0" layoutY="570.0" mnemonicParsing="false" onAction="#onLogout" text="Logout" />
       <Label layoutX="30.0" layoutY="30.0" text="Packages:" />
       <TableView fx:id="packageTableView" layoutX="30.0" layoutY="60.0" prefHeight="250.0" prefWidth="500.0">
         <columns>
@@ -19,5 +19,20 @@
       </TableView>
       <Label layoutX="560.0" layoutY="30.0" text="Package description:" />
       <TextArea fx:id="packageDescriptionTextArea" layoutX="560.0" layoutY="60.0" prefHeight="100.0" prefWidth="200.0" />
+
+      <Label layoutX="30.0" layoutY="340.0" text="Package:" />
+
+      <Label layoutX="30.0" layoutY="380.0" text="Name" />
+      <Label layoutX="30.0" layoutY="415.0" text="From" />
+      <Label layoutX="30.0" layoutY="450.0" text="To" />
+      <Label layoutX="30.0" layoutY="485.0" text="Description" />
+      <Label layoutX="30.0" layoutY="540.0" text="Weight(kg)" />
+
+      <TextField layoutX="120.0" layoutY="376.0" />
+      <TextField layoutX="120.0" layoutY="411.0" />
+      <TextField layoutX="120.0" layoutY="446.0" />
+      <TextArea layoutX="120.0" layoutY="482.0" prefHeight="40.0" prefWidth="149.0" />
+      <TextField layoutX="120.0" layoutY="538.0" />
+      <CheckBox layoutX="30.0" layoutY="575.0" mnemonicParsing="false" text="Fragile" />
    </children>
 </AnchorPane>
