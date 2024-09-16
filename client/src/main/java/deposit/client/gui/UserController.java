@@ -20,6 +20,8 @@ public class UserController implements IObserver {
     private IService service;
     private User user;
 
+    private Package selectedPackage;
+
     @FXML
     private Button logoutBtn;
 
@@ -65,6 +67,7 @@ public class UserController implements IObserver {
     public void init_controller(IService service, User user) throws Exception {
         this.service = service;
         this.user = user;
+        this.selectedPackage = null;
 
         this.initModel();
     }
@@ -89,11 +92,23 @@ public class UserController implements IObserver {
                     // Update the text area with the description of the selected package
                     packageDescriptionTextArea.setText(newValue.getDescription());
 
+                    // Fill input fields
+                    nameTextField.setText(newValue.getName());
+                    fromTextField.setText(newValue.getP_from());
+                    toTextField.setText(newValue.getP_to());
+                    descrtiptionTextArea.setText(newValue.getDescription());
+                    weghtTextField.setText(newValue.getWeight().toString());
+                    fragileCheckBox.setSelected(newValue.getFragile());
+
+                    selectedPackage = newValue;
+
                     updateButton.setDisable(false);
                     deleteButton.setDisable(false);
                 } else {
                     // Clear the text area if no package is selected
                     packageDescriptionTextArea.clear();
+
+                    selectedPackage = null;
 
                     updateButton.setDisable(true);
                     deleteButton.setDisable(true);
@@ -181,7 +196,39 @@ public class UserController implements IObserver {
         }
     }
     public void onUpdatePackage(ActionEvent actionEvent) {
+        try
+        {
+            String name = this.nameTextField.getText();
+            String from = this.nameTextField.getText();
+            String to = this.nameTextField.getText();
+            String description = this.descrtiptionTextArea.getText();
+            float weight = 0F;
+            try
+            {
+                if (!this.weghtTextField.getText().isEmpty())
+                    weight = Float.parseFloat(this.weghtTextField.getText());
+            }
+            catch (Exception ignored) {}
+            Boolean fragile = this.fragileCheckBox.isSelected();
+
+            if (name.isEmpty() || from.isEmpty() || to.isEmpty())
+                MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", "The following fields are mandatory: name, from, to");
+            else {
+                Package newPackage = new Package(name, from, to, description, weight, fragile);
+                newPackage.setId(selectedPackage.getId());
+                this.service.updatePackage(newPackage);
+            }
+        }
+        catch (Exception e) {
+            MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", e.getMessage());
+        }
     }
     public void onDeletePackage(ActionEvent actionEvent) {
+        try {
+            this.service.deletePackage(this.selectedPackage.getId());
+        }
+        catch (Exception e) {
+            MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", e.getMessage());
+        }
     }
 }
