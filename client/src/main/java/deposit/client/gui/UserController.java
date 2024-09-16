@@ -10,10 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -43,6 +40,26 @@ public class UserController implements IObserver {
 
     @FXML
     private TextArea packageDescriptionTextArea;
+
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField fromTextField;
+    @FXML
+    private TextField toTextField;
+    @FXML
+    private TextArea descrtiptionTextArea;
+    @FXML
+    private TextField weghtTextField;
+    @FXML
+    private CheckBox fragileTextBox;
+
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button updateButton;
+    @FXML
+    private Button deleteButton;
 
     public void init_controller(IService service, User user) throws Exception {
         this.service = service;
