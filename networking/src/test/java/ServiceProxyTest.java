@@ -128,7 +128,7 @@ public class ServiceProxyTest {
     @Test
     public void getAllPackagesTest() throws Exception {
         // setting up input reader - just as we were reading from the socket
-        String responsesSeparatedWithNewLines = "{'type'='OK', 'data'=1}" + System.lineSeparator() + "{'type'='GET_ALL_PACKAGES', 'data'=null}" + System.lineSeparator();
+        String responsesSeparatedWithNewLines = "{'type'='OK', 'data'=1}" + System.lineSeparator() + "{'type'='OK', 'data'=null}" + System.lineSeparator();
 
         StringReader responseReader = new StringReader(responsesSeparatedWithNewLines);
         var bufferedResponseReader = new BufferedReader(responseReader);

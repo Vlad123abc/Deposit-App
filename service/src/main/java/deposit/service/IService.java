@@ -11,4 +11,8 @@ public interface IService {
 
     User getUserByUsername(String username) throws Exception;
     List<Package> getAllPackages() throws Exception;
+
+    void savePackage(String name, String p_from, String p_to, String description, Float weight, Boolean fragile) throws Exception;
+    void updatePackage(Package newPackage) throws Exception;
+    void deletePackage(Long id) throws Exception;
 }

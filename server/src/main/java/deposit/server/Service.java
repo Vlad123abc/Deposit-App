@@ -51,4 +51,68 @@ public class Service implements IService {
     public List<Package> getAllPackages() {
         return this.packageRepository.getAll();
     }
+
+    @Override
+    public void savePackage(String name, String p_from, String p_to, String description, Float weight, Boolean fragile) {
+        this.packageRepository.save(new Package(name, p_from, p_to, description, weight, fragile));
+        this.notifyPackageSaved(name, p_from, p_to, description, weight, fragile);
+    }
+
+    @Override
+    public void updatePackage(Package newPackage) {
+        this.packageRepository.update(newPackage);
+        this.notifyPackageUpdated(newPackage);
+    }
+
+    @Override
+    public void deletePackage(Long id) {
+        this.packageRepository.delete(id);
+        this.notifyPackageDeleted(id);
+    }
+
+    private void notifyPackageSaved(String name, String p_from, String p_to, String description, Float weight, Boolean fragile) {
+        Iterable<User> users = this.userRepository.getAll();
+        for(User us : users) {
+            IObserver client = loggedClients.get(us.getId());
+            if (client != null) {
+                try {
+                    System.out.println("notifying package saved");
+                    client.packageSaved(new Package(name, p_from, p_to, description, weight, fragile));
+                }
+                catch (Exception e) {
+                    System.err.println("Error notifying user " + e);
+                }
+            }
+        }
+    }
+    private void notifyPackageUpdated(Package newPackage) {
+        Iterable<User> users = this.userRepository.getAll();
+        for(User us : users) {
+            IObserver client = loggedClients.get(us.getId());
+            if (client != null) {
+                try {
+                    System.out.println("notifying package updated");
+                    client.packageUpdated(newPackage);
+                }
+                catch (Exception e) {
+                    System.err.println("Error notifying user " + e);
+                }
+            }
+        }
+    }
+    public void notifyPackageDeleted(Long id) {
+        Iterable<User> users = this.userRepository.getAll();
+        for(User us : users) {
+            IObserver client = loggedClients.get(us.getId());
+            if (client != null) {
+                try {
+                    System.out.println("notifying package deleted");
+                    client.packageDeleted(id);
+                }
+                catch (Exception e) {
+                    System.err.println("Error notifying user " + e);
+                }
+            }
+        }
+    }
 }

@@ -162,6 +162,45 @@ public class ClientWorker implements Runnable, IObserver {
             }
         }
 
+        if (request.getType() == RequestType.SAVE_PACKAGE) {
+            System.out.println("SAVE_PACKAGE request ...");
+            try {
+                Package pack = gsonFormatter.fromJson(request.getData().toString(), Package.class);
+                this.server.savePackage(pack.getName(), pack.getP_from(), pack.getP_to(), pack.getDescription(), pack.getWeight(), pack.getFragile());
+                return new Response.Builder().setType(ResponseType.OK).build();
+            }
+            catch (Exception e) {
+                connected = false;
+                return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
+            }
+        }
+
+        if (request.getType() == RequestType.UPDATE_PACKAGE) {
+            System.out.println("UPDATE_PACKAGE request ...");
+            try {
+                Package pack = gsonFormatter.fromJson(request.getData().toString(), Package.class);
+                this.server.updatePackage(pack);
+                return new Response.Builder().setType(ResponseType.OK).build();
+            }
+            catch (Exception e) {
+                connected = false;
+                return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
+            }
+        }
+
+        if (request.getType() == RequestType.DELETE_PACKAGE) {
+            System.out.println("DELETE_PACKAGE request ...");
+            try {
+                Long id = gsonFormatter.fromJson(request.getData().toString(), Long.class);
+                this.server.deletePackage(id);
+                return new Response.Builder().setType(ResponseType.OK).build();
+            }
+            catch (Exception e) {
+                connected = false;
+                return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
+            }
+        }
+
         return null;
     }
 

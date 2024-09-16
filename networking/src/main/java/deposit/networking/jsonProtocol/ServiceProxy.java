@@ -170,6 +170,66 @@ public class ServiceProxy implements IService {
         return packageList;
     }
 
+    @Override
+    public void savePackage(String name, String p_from, String p_to, String description, Float weight, Boolean fragile) throws Exception {
+        Request req = new Request.Builder().setType(RequestType.SAVE_PACKAGE).setData(new Package(name, p_from, p_to, description, weight, fragile)).build();
+
+        System.out.println("Sending SAVE_PACKAGE Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived SAVE_PACKAGE Response: " + response.toString());
+
+        if (response.getType() == ResponseType.OK) {
+            System.out.println("UPDATE_PACKAGE OK");
+        }
+        if (response.getType() == ResponseType.ERROR) {
+            String err = (String) response.getData();
+            System.out.println("Closing connection...");
+            closeConnection();
+            throw new Exception(err);
+        }
+    }
+
+    @Override
+    public void updatePackage(Package newPackage) throws Exception {
+        Request req = new Request.Builder().setType(RequestType.UPDATE_PACKAGE).setData(newPackage).build();
+
+        System.out.println("Sending UPDATE_PACKAGE Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived UPDATE_PACKAGE Response: " + response.toString());
+
+        if (response.getType() == ResponseType.OK) {
+            System.out.println("UPDATE_PACKAGE OK");
+        }
+        if (response.getType() == ResponseType.ERROR) {
+            String err = (String) response.getData();
+            System.out.println("Closing connection...");
+            closeConnection();
+            throw new Exception(err);
+        }
+    }
+
+    @Override
+    public void deletePackage(Long id) throws Exception {
+        Request req = new Request.Builder().setType(RequestType.DELETE_PACKAGE).setData(id).build();
+
+        System.out.println("Sending DELETE_PACKAGE Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived DELETE_PACKAGE Response: " + response.toString());
+
+        if (response.getType() == ResponseType.OK) {
+            System.out.println("DELETE_PACKAGE OK");
+        }
+        if (response.getType() == ResponseType.ERROR) {
+            String err = (String) response.getData();
+            System.out.println("Closing connection...");
+            closeConnection();
+            throw new Exception(err);
+        }
+    }
+
     private void handleUpdate(Response response) {
         if (response.getType() == ResponseType.SAVE_PACKAGE) {
             Package pack = gsonFormatter.fromJson(response.getData().toString(), Package.class);

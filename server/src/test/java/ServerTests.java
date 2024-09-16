@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -130,5 +131,28 @@ public class ServerTests {
         assertEquals("pack1", packages.get(0).getName());
         assertEquals("pack2", packages.get(1).getName());
         assertEquals("pack3", packages.get(2).getName());
+    }
+
+    @Test
+    void packageCrudTest()
+    {
+        Service service = this.createTestService();
+
+        assertEquals(3, service.getAllPackages().size());
+
+        Package pack1 = service.getAllPackages().get(0);
+        assertEquals("pack1", pack1.getName());
+
+        pack1.setName("test");
+        service.updatePackage(pack1);
+        assertEquals("test", service.getAllPackages().get(0).getName());
+
+        service.deletePackage(1L);
+
+        assertEquals(2, service.getAllPackages().size());
+
+        List<Package> packageList = service.getAllPackages();
+        assertEquals("pack2", packageList.get(0).getName());
+        assertEquals("pack3", packageList.get(1).getName());
     }
 }
