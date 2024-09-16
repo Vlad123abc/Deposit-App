@@ -53,7 +53,7 @@ public class UserController implements IObserver {
     @FXML
     private TextField weghtTextField;
     @FXML
-    private CheckBox fragileTextBox;
+    private CheckBox fragileCheckBox;
 
     @FXML
     private Button saveButton;
@@ -157,6 +157,28 @@ public class UserController implements IObserver {
 
 
     public void onSavePackage(ActionEvent actionEvent) {
+        try {
+            String name = this.nameTextField.getText();
+            String from = this.nameTextField.getText();
+            String to = this.nameTextField.getText();
+            String description = this.descrtiptionTextArea.getText();
+            // Float weight = Float.valueOf(this.weghtTextField.getText());
+            float weight = 0F;
+            try {
+                if (!this.weghtTextField.getText().isEmpty())
+                    weight = Float.parseFloat(this.weghtTextField.getText());
+            }
+            catch(Exception ignored){}
+            Boolean fragile = this.fragileCheckBox.isSelected();
+
+            if (name.isEmpty() || from.isEmpty() || to.isEmpty())
+                MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", "The following fields are mandatory: name, from, to");
+            else
+                this.service.savePackage(name, from, to, description, weight, fragile);
+        }
+        catch (Exception e) {
+            MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", e.getMessage());
+        }
     }
     public void onUpdatePackage(ActionEvent actionEvent) {
     }
