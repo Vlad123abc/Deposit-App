@@ -15,6 +15,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class UserController implements IObserver {
     private IService service;
@@ -63,6 +66,9 @@ public class UserController implements IObserver {
     private Button updateButton;
     @FXML
     private Button deleteButton;
+
+    @FXML
+    private ComboBox<String> filterComboBox;
 
     public void init_controller(IService service, User user) throws Exception {
         this.service = service;
@@ -115,6 +121,13 @@ public class UserController implements IObserver {
                 }
             }
         });
+
+        // Filter ComboBox
+        List<String> filters = new ArrayList<>();
+        filters.add("Name");
+        filters.add("From");
+        filters.add("To");
+        this.filterComboBox.setItems(FXCollections.observableArrayList(filters));
     }
 
     private void initModel() throws Exception
@@ -230,5 +243,9 @@ public class UserController implements IObserver {
         catch (Exception e) {
             MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", e.getMessage());
         }
+    }
+
+    public void onRefresh(ActionEvent actionEvent) throws Exception {
+        this.initModel();
     }
 }

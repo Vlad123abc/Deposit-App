@@ -35,8 +35,13 @@
       <TextField fx:id="weghtTextField" layoutX="120.0" layoutY="538.0" />
       <CheckBox fx:id="fragileCheckBox" layoutX="30.0" layoutY="575.0" mnemonicParsing="false" text="Fragile" />
 
-      <Button fx:id="saveButton" layoutX="320.0" layoutY="336.0" mnemonicParsing="false" text="Save" onAction="#onSavePackage"/>
-      <Button fx:id="updateButton" layoutX="400.0" layoutY="336.0" mnemonicParsing="false" text="Update" onAction="#onUpdatePackage"/>
-      <Button fx:id="deleteButton" layoutX="480.0" layoutY="336.0" mnemonicParsing="false" text="Delete" onAction="#onDeletePackage"/>
+      <Button fx:id="saveButton" layoutX="320.0" layoutY="336.0" mnemonicParsing="false" onAction="#onSavePackage" text="Save" />
+      <Button fx:id="updateButton" layoutX="400.0" layoutY="336.0" mnemonicParsing="false" onAction="#onUpdatePackage" text="Update" />
+      <Button fx:id="deleteButton" layoutX="480.0" layoutY="336.0" mnemonicParsing="false" onAction="#onDeletePackage" text="Delete" />
+
+      <Button layoutX="120.0" layoutY="26.0" mnemonicParsing="false" onAction="#onRefresh" text="Refresh" />
+      <Label layoutX="560.0" layoutY="200.0" text="Filter:" />
+       <ComboBox fx:id="filterComboBox" layoutX="610.0" layoutY="196.0" prefWidth="150.0" />
+      <Button layoutX="553.0" layoutY="240.0" mnemonicParsing="false" text="Filter" />
    </children>
 </AnchorPane>

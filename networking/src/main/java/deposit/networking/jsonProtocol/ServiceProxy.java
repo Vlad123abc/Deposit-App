@@ -230,6 +230,84 @@ public class ServiceProxy implements IService {
         }
     }
 
+    @Override
+    public List<Package> getAllPackagesByName(String name) throws Exception {
+        Request req = new Request.Builder().setType(RequestType.GET_ALL_PACKAGES_BY_NAME).setData(name).build();
+
+        System.out.println("Sending GET_ALL_PACKAGES_BY_NAME Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived GET_ALL_PACKAGES_BY_NAME Response: " + response.toString());
+
+        if (response.getType() == ResponseType.ERROR) {
+            closeConnection();
+            String err = response.getData().toString();
+            throw new Exception(err);
+        }
+
+        List<Package> packageList = new ArrayList<>();
+        if (response.getData() == null)
+            return packageList;
+        var list = gsonFormatter.fromJson(response.getData().toString(), packageList.getClass());
+        for (var pack : list) {
+            Package c = gsonFormatter.fromJson(pack.toString(), Package.class);
+            packageList.add(c);
+        }
+        return packageList;
+    }
+
+    @Override
+    public List<Package> getAllPackagesByFrom(String from) throws Exception {
+        Request req = new Request.Builder().setType(RequestType.GET_ALL_PACKAGES_BY_FROM).setData(from).build();
+
+        System.out.println("Sending GET_ALL_PACKAGES_BY_FROM Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived GET_ALL_PACKAGES_BY_FROM Response: " + response.toString());
+
+        if (response.getType() == ResponseType.ERROR) {
+            closeConnection();
+            String err = response.getData().toString();
+            throw new Exception(err);
+        }
+
+        List<Package> packageList = new ArrayList<>();
+        if (response.getData() == null)
+            return packageList;
+        var list = gsonFormatter.fromJson(response.getData().toString(), packageList.getClass());
+        for (var pack : list) {
+            Package c = gsonFormatter.fromJson(pack.toString(), Package.class);
+            packageList.add(c);
+        }
+        return packageList;
+    }
+
+    @Override
+    public List<Package> getAllPackagesByTo(String to) throws Exception {
+        Request req = new Request.Builder().setType(RequestType.GET_ALL_PACKAGES_BY_TO).setData(to).build();
+
+        System.out.println("Sending GET_ALL_PACKAGES_BY_TO Request: " + req.toString());
+        sendRequest(req);
+        Response response = readResponse();
+        System.out.println("Recived GET_ALL_PACKAGES_BY_TO Response: " + response.toString());
+
+        if (response.getType() == ResponseType.ERROR) {
+            closeConnection();
+            String err = response.getData().toString();
+            throw new Exception(err);
+        }
+
+        List<Package> packageList = new ArrayList<>();
+        if (response.getData() == null)
+            return packageList;
+        var list = gsonFormatter.fromJson(response.getData().toString(), packageList.getClass());
+        for (var pack : list) {
+            Package c = gsonFormatter.fromJson(pack.toString(), Package.class);
+            packageList.add(c);
+        }
+        return packageList;
+    }
+
     private void handleUpdate(Response response) {
         if (response.getType() == ResponseType.SAVE_PACKAGE) {
             Package pack = gsonFormatter.fromJson(response.getData().toString(), Package.class);

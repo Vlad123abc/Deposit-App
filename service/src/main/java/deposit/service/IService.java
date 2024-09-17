@@ -15,4 +15,8 @@ public interface IService {
     void savePackage(String name, String p_from, String p_to, String description, Float weight, Boolean fragile) throws Exception;
     void updatePackage(Package newPackage) throws Exception;
     void deletePackage(Long id) throws Exception;
+
+    List<Package> getAllPackagesByName(String name) throws Exception;
+    List<Package> getAllPackagesByFrom(String from) throws Exception;
+    List<Package> getAllPackagesByTo(String to) throws Exception;
 }

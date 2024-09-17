@@ -162,6 +162,43 @@ public class ClientWorker implements Runnable, IObserver {
             }
         }
 
+        if (request.getType() == RequestType.GET_ALL_PACKAGES_BY_NAME) {
+            System.out.println("GET_ALL_PACKAGES_BY_NAME request ..." + request.getType());
+            try {
+                String name = gsonFormatter.fromJson(request.getData().toString(), String.class);
+                List<Package> packages = this.server.getAllPackagesByName(name);
+                return new Response.Builder().setType(ResponseType.OK).setData(packages).build();
+            }
+            catch (Exception e) {
+                connected = false;
+                return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
+            }
+        }
+        if (request.getType() == RequestType.GET_ALL_PACKAGES_BY_FROM) {
+            System.out.println("GET_ALL_PACKAGES_BY_FROM request ..." + request.getType());
+            try {
+                String name = gsonFormatter.fromJson(request.getData().toString(), String.class);
+                List<Package> packages = this.server.getAllPackagesByFrom(name);
+                return new Response.Builder().setType(ResponseType.OK).setData(packages).build();
+            }
+            catch (Exception e) {
+                connected = false;
+                return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
+            }
+        }
+        if (request.getType() == RequestType.GET_ALL_PACKAGES_BY_TO) {
+            System.out.println("GET_ALL_PACKAGES_BY_TO request ..." + request.getType());
+            try {
+                String name = gsonFormatter.fromJson(request.getData().toString(), String.class);
+                List<Package> packages = this.server.getAllPackagesByTo(name);
+                return new Response.Builder().setType(ResponseType.OK).setData(packages).build();
+            }
+            catch (Exception e) {
+                connected = false;
+                return new Response.Builder().setType(ResponseType.ERROR).setData(e.getMessage()).build();
+            }
+        }
+
         if (request.getType() == RequestType.SAVE_PACKAGE) {
             System.out.println("SAVE_PACKAGE request ...");
             try {

@@ -70,6 +70,21 @@ public class Service implements IService {
         this.notifyPackageDeleted(id);
     }
 
+    @Override
+    public List<Package> getAllPackagesByName(String name) {
+        return this.packageRepository.getByName(name);
+    }
+
+    @Override
+    public List<Package> getAllPackagesByFrom(String from) {
+        return this.packageRepository.getByFrom(from);
+    }
+
+    @Override
+    public List<Package> getAllPackagesByTo(String to) {
+        return this.packageRepository.getByTo(to);
+    }
+
     private void notifyPackageSaved(String name, String p_from, String p_to, String description, Float weight, Boolean fragile) {
         Iterable<User> users = this.userRepository.getAll();
         for(User us : users) {
