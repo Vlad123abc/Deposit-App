@@ -69,6 +69,8 @@ public class UserController implements IObserver {
 
     @FXML
     private ComboBox<String> filterComboBox;
+    @FXML
+    private TextField filterTextField;
 
     public void init_controller(IService service, User user) throws Exception {
         this.service = service;
@@ -128,6 +130,7 @@ public class UserController implements IObserver {
         filters.add("From");
         filters.add("To");
         this.filterComboBox.setItems(FXCollections.observableArrayList(filters));
+        this.filterComboBox.setValue("Name");
     }
 
     private void initModel() throws Exception
@@ -247,5 +250,23 @@ public class UserController implements IObserver {
 
     public void onRefresh(ActionEvent actionEvent) throws Exception {
         this.initModel();
+    }
+
+    public void onFilter(ActionEvent actionEvent) throws Exception {
+        String filterBy = this.filterComboBox.getValue();
+        String string = this.filterTextField.getText();
+
+        if (filterBy.equals("Name")){
+            this.modelPackages.setAll(this.service.getAllPackagesByName(string));
+        }
+        else if (filterBy.equals("From")) {
+            this.modelPackages.setAll(this.service.getAllPackagesByFrom(string));
+        }
+        else if (filterBy.equals("To")) {
+            this.modelPackages.setAll(this.service.getAllPackagesByTo(string));
+        }
+        else {
+            MessageWindow.showMessage(null, Alert.AlertType.ERROR, "Error", "Select a filter method.");
+        }
     }
 }
