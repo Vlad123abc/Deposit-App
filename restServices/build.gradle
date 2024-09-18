@@ -18,6 +18,7 @@ dependencies {
     implementation project(path: ':repository')
     implementation project(path: ':server')
     implementation project(path: ':service')
+    implementation project(path: ':domain')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.jayway.jsonpath:json-path'
 
