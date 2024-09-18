@@ -1,6 +1,7 @@
 package deposit.restServices;
 
 import deposit.domain.Package;
+import deposit.domain.User;
 import deposit.server.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,18 @@ public class ServerController {
         try {
             List<Package> packages = service.getAllPackagesByName(name);
             return new ResponseEntity<>(packages, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/users/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
+        System.out.println("Get user by username: " + username);
+        try {
+            User user = service.getUserByUsername(username);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
