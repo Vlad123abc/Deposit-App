@@ -70,4 +70,40 @@ public class ServerController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/users")
+    public ResponseEntity<?> saveUser(@RequestBody User user){
+        System.out.println("Saving user " + user.toString());
+        try {
+            this.userRepository.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/users")
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        System.out.println("Updating user " + user.toString());
+        try {
+            this.userRepository.update(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method= RequestMethod.DELETE, value="/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id){
+        System.out.println("Deleting user with id " + id);
+        try {
+            this.userRepository.delete(Long.valueOf(id));
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
