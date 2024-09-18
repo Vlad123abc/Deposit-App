@@ -37,7 +37,7 @@ public class ServerController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}")
-    public ResponseEntity<?> getPackagesById(@PathVariable String id){
+    public ResponseEntity<?> getUsersById(@PathVariable String id){
         System.out.println("Get user by id: " + id);
         try {
             User user = this.userRepository.getById(Long.valueOf(id));
@@ -59,12 +59,12 @@ public class ServerController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/packages/{name}")
-    public ResponseEntity<?> getPackagesByName(@PathVariable String name){
-        System.out.println("Get package by name: " + name);
+    @RequestMapping(method = RequestMethod.GET, value = "/packages/{id}")
+    public ResponseEntity<?> getPackagesById(@PathVariable String id){
+        System.out.println("Get package by id: " + id);
         try {
-            List<Package> packages = service.getAllPackagesByName(name);
-            return new ResponseEntity<>(packages, HttpStatus.OK);
+            Package pack = packageRepository.getById(Long.valueOf(id));
+            return new ResponseEntity<>(pack, HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
