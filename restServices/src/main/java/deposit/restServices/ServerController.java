@@ -48,29 +48,6 @@ public class ServerController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/packages")
-    public ResponseEntity<List<Package>> getAllPackages() {
-        try {
-            List<Package> packages = service.getAllPackages();
-            return new ResponseEntity<>(packages, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/packages/{id}")
-    public ResponseEntity<?> getPackagesById(@PathVariable String id){
-        System.out.println("Get package by id: " + id);
-        try {
-            Package pack = packageRepository.getById(Long.valueOf(id));
-            return new ResponseEntity<>(pack, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/users")
     public ResponseEntity<?> saveUser(@RequestBody User user){
         System.out.println("Saving user " + user.toString());
@@ -100,6 +77,65 @@ public class ServerController {
         System.out.println("Deleting user with id " + id);
         try {
             this.userRepository.delete(Long.valueOf(id));
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/packages")
+    public ResponseEntity<List<Package>> getAllPackages() {
+        try {
+            List<Package> packages = service.getAllPackages();
+            return new ResponseEntity<>(packages, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/packages/{id}")
+    public ResponseEntity<?> getPackagesById(@PathVariable String id){
+        System.out.println("Get package by id: " + id);
+        try {
+            Package pack = packageRepository.getById(Long.valueOf(id));
+            return new ResponseEntity<>(pack, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/packages")
+    public ResponseEntity<?> savePackage(@RequestBody Package pack){
+        System.out.println("Saving package " + pack.toString());
+        try {
+            this.packageRepository.save(pack);
+            return new ResponseEntity<>(pack, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/packages")
+    public ResponseEntity<?> updatePackage(@RequestBody Package pack) {
+        System.out.println("Updating package " + pack.toString());
+        try {
+            this.packageRepository.update(pack);
+            return new ResponseEntity<>(pack, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method= RequestMethod.DELETE, value="/packages/{id}")
+    public ResponseEntity<?> deletePackage(@PathVariable String id){
+        System.out.println("Deleting package with id " + id);
+        try {
+            this.packageRepository.delete(Long.valueOf(id));
             return new ResponseEntity<>(id, HttpStatus.OK);
         }
         catch (Exception e){
